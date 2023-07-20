@@ -33,18 +33,18 @@ class WebServer {
 
     start() {
 
-        this.$webServer.addHook('onRequest', (req, reply) => {
-            console.log('onRequest', req.raw.method, req.raw.url);
-            console.log(req.headers);
-        });
+        // this.$webServer.addHook('onRequest', (req, reply) => {
+        //     console.log('onRequest', req.raw.method, req.raw.url);
+        //     console.log(req.headers);
+        // });
 
         this.$webServer.addHook('onResponse', (req, reply) => {
-            console.log('onResponse', reply.statusCode);
+            console.log('onResponse', req.raw.url, reply.statusCode);
         });
-
 
 
         this.$webServer.register(Cors, { origin: "*" })
+
         this.$webServer.register(
             Proxy, {
             upstream: 'https://api.commerce.naver.com',
@@ -61,13 +61,13 @@ class WebServer {
             Proxy, {
             upstream: 'https://api-gateway.coupang.com',
             prefix: '/coupang',
-            replyOptions: {
-                onResponse: (req, reply, res) => {
-                    console.log('onResponse', req);
+            // replyOptions: {
+            //     onResponse: (req, reply, res) => {
+            //         console.log('onResponse', req);
 
-                }
+            //     }
 
-            }
+            // }
         });
 
         this.$webServer.listen({
